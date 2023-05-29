@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: springdatajpa
+  name: springdatajpa
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: springdatajpa
+  template:
+    metadata:
+      labels:
+        app: springdatajpa
+    spec:
+      containers:
+        - name: my-springdatajpa
+          image: 211223789150.dkr.ecr.us-east-1.amazonaws.com/my-springdatajpa:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8085
+              name: http
+              protocol: TCP
+# service type loadbalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: springdatajpa
+    k8s-app: springdatajpa
+  name: springdatajpa
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8085
+  type: LoadBalancer
+  selector:
+    app: springdatajpa

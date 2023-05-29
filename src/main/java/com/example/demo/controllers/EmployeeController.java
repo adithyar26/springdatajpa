@@ -5,11 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.models.Employee;
 import com.example.demo.repositories.EmployeeDAO;
@@ -19,18 +15,12 @@ public class EmployeeController {
 	
 	@Autowired
 	EmployeeDAO dao;
-	
-	@RequestMapping("/")
-	public String empinsert()
-	{
-		return "index.jsp";
-	}
-	
-	@RequestMapping("/addEmp")
+
+	@PostMapping("/addEmp")
 	public String addEmp(Employee e)
 	{	dao.save(e);
 		
-		return "index.jsp";
+		return "Added employee successfully";
 	}
 	@GetMapping(value = "/getEmployees",produces = {"application/xml"})
 	@ResponseBody
@@ -47,13 +37,14 @@ public class EmployeeController {
 		
 		return dao.findById(eid);
 	}
-	@PostMapping("/updateEmp")
+	@PutMapping("/updateEmp")
 	public String updateEmp(@RequestBody Employee e)
 	{	
 		dao.save(e);
-		return "index.jsp";
+		return "updated employee successfully";
 	}
-	@RequestMapping("/DeleteEmployee")
+
+	@DeleteMapping("/DeleteEmployee")
 	@ResponseBody
 	public String deleteEmp(int eid)
 	{	
